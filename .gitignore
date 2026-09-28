@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.vercel
+node_modules/
+tools/eval/cache/
+tools/eval/photos/
+tools/eval/models/
