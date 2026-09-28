@@ -7,8 +7,49 @@
 <link rel="stylesheet" href="main.css">
 </head>
 <body>
-<div id="root"></div>
-<script>window.instinctFile = Object.freeze({ initialRoute: decodeURIComponent(location.hash.slice(1) || '/'), route: function () {} });</script>
-<script src="main.js"></script>
+<main id="app">
+  <h1>Papercut Collage</h1>
+
+  <section id="step-pick" class="card">
+    <p>Take a selfie (or pick one). The app turns it into big paper shapes you can cut and stick, one piece at a time.</p>
+    <label class="btn">
+      <input id="file" type="file" accept="image/*" capture="user" class="vh">
+      Take / pick a selfie
+    </label>
+    <p class="hint">Best: bright light, plain-ish background, face forward.</p>
+  </section>
+
+  <section id="step-work" class="card" hidden>
+    <p id="work-msg">Reading the photo…</p>
+  </section>
+
+  <section id="step-result" class="card" hidden>
+    <div id="sheet"></div>
+    <div id="swatches"></div>
+    <p id="summary"></p>
+    <div class="row">
+      <button id="start-guide" class="btn">Start the sticking guide</button>
+      <button id="dl" class="btn secondary">Download print sheet (SVG)</button>
+    </div>
+    <p class="hint">Print big (A3 / 60cm) so every piece is scissor-friendly.</p>
+    <button id="redo" class="link">Use a different photo</button>
+  </section>
+
+  <section id="step-guide" class="card" hidden>
+    <div id="guide-sheet"></div>
+    <p id="guide-label"></p>
+    <div class="row">
+      <button id="prev" class="btn secondary">← Back</button>
+      <button id="next" class="btn">Next piece →</button>
+    </div>
+    <button id="exit-guide" class="link">Back to full sheet</button>
+  </section>
+
+  <section id="step-err" class="card" hidden>
+    <p id="err-msg"></p>
+    <button id="retry" class="btn">Try again</button>
+  </section>
+</main>
+<script type="module" src="app.js"></script>
 </body>
 </html>
