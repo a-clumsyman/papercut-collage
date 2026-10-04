@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Papercut Collage Guide</title>
+<meta name="description" content="Turn a selfie into a paper-collage portrait: realistic, Ghibli-style or toon. Get numbered pieces, cutting templates and a step-by-step gluing guide.">
 <link rel="stylesheet" href="main.css">
 </head>
 <body>
@@ -11,27 +12,49 @@
   <h1>Papercut Collage</h1>
 
   <section id="step-pick" class="card">
-    <p>Take a selfie (or pick one). The app turns it into big paper shapes you can cut and stick, one piece at a time.</p>
-    <label class="btn">
-      <input id="file" type="file" accept="image/*" capture="user" class="vh">
-      Take / pick a selfie
-    </label>
-    <p class="hint">Best: bright light, plain-ish background, face forward.</p>
+    <p>Take a selfie or upload a photo. You'll get a paper-collage version in your choice of style, with cutting templates and a gluing guide.</p>
+    <div id="drop" class="drop">
+      <div class="row">
+        <label class="btn"><input id="file-camera" type="file" accept="image/*" capture="user" class="vh">Take a selfie</label>
+        <label class="btn secondary"><input id="file-upload" type="file" accept="image/*" class="vh">Upload a photo</label>
+      </div>
+      <p class="hint">…or drop / paste an image here.</p>
+    </div>
+    <p class="hint">Best: one person, face forward, good light. The photo is processed in your browser; only the stylised picture is sent to the cutter.</p>
   </section>
 
   <section id="step-work" class="card" hidden>
     <p id="work-msg">Reading the photo…</p>
   </section>
 
+  <section id="step-style" class="card" hidden>
+    <div id="crop-preview" class="preview"></div>
+    <p>Pick a style:</p>
+    <div id="style-cards" class="cards"></div>
+    <p class="hint">Difficulty:
+      <select id="difficulty">
+        <option value="easy" selected>Easy · ~30 pieces, nothing under 4 mm</option>
+        <option value="medium">Medium · more detail, ~45 pieces</option>
+      </select>
+    </p>
+    <button id="other-photo" class="link">Use a different photo</button>
+  </section>
+
   <section id="step-result" class="card" hidden>
-    <div id="sheet"></div>
-    <div id="swatches"></div>
-    <p id="summary"></p>
-    <div class="row">
-      <button id="start-guide" class="btn">Start the sticking guide</button>
-      <button id="dl" class="btn secondary">Download cutting templates (SVG)</button>
+    <div id="style-tabs" class="tabs"></div>
+    <div class="two">
+      <div><p class="hint">Styled portrait</p><div id="styled-preview" class="preview"></div></div>
+      <div><p class="hint">Paper pieces</p><div id="sheet"></div></div>
     </div>
-    <p class="hint">Print the templates at 100% on A4. Pieces are at least 4 mm wide (2.5 mm around the eyes), with no holes to cut out.</p>
+    <p id="summary"></p>
+    <div id="papers" class="papers"></div>
+    <div class="row">
+      <button id="start-guide" class="btn">Start the gluing guide</button>
+      <button id="dl" class="btn secondary">Download cutting templates (SVG)</button>
+      <button id="dl-styled" class="btn secondary">Save styled picture</button>
+    </div>
+    <p class="hint">Print the templates at 100% on A4. Pieces are at least 4 mm wide (2.5 mm around the eyes), with no holes to cut out. Match each paper to the colour swatch as closely as you can.</p>
+    <button id="back-style" class="link">Try another style</button>
     <button id="redo" class="link">Use a different photo</button>
   </section>
 
