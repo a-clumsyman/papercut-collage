@@ -8,7 +8,7 @@ h1 { font-size: 1.5rem; margin: 12px 0 16px; }
 .link { background:none; border:0; color:#7a6f5c; text-decoration:underline; margin-top:12px; cursor:pointer; display:block; }
 .hint { color:#8a8069; font-size:.85rem; }
 .row { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
-#sheet svg, #guide-sheet svg { width:100%; height:auto; border-radius:10px; display:block; }
+#sheet svg, #guide-sheet svg, #crop-preview canvas { width:100%; height:auto; border-radius:10px; display:block; }
 #summary, #guide-label { font-weight:600; margin:12px 0 0; }
 #work-msg { text-align:center; padding:24px 0; }
 
@@ -17,3 +17,23 @@ h1 { font-size: 1.5rem; margin: 12px 0 16px; }
 .swatch.sel { box-shadow:0 0 0 3px #2b2620; }
 
 .vh { position:absolute; width:1px; height:1px; opacity:0.01; }
+
+.drop { border:2px dashed #cfc7b2; border-radius:12px; padding:14px; text-align:center; }
+.drop.over { border-color:#2b2620; background:#f3efe6; }
+.drop .row { justify-content:center; margin-top:0; }
+.preview canvas, .preview img { width:100%; height:auto; border-radius:10px; display:block; }
+.cards { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.style-card { background:#fff; border:2px solid #e3dccb; border-radius:12px; padding:12px 10px; cursor:pointer; text-align:left; font:inherit; color:inherit; }
+.style-card:hover { border-color:#2b2620; }
+.style-card strong { display:block; margin-bottom:4px; }
+.style-card small { color:#8a8069; line-height:1.3; display:block; }
+.tabs { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
+.tab { background:#e8e2d2; border:0; border-radius:999px; padding:6px 14px; cursor:pointer; font:inherit; color:#2b2620; }
+.tab.sel { background:#2b2620; color:#fff; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.papers { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:10px; font-size:.9rem; }
+.paper { display:flex; align-items:center; gap:8px; }
+.paper small { color:#8a8069; }
+.chip { display:inline-block; width:18px; height:18px; border-radius:50%; border:1px solid #cfc7b2; vertical-align:middle; }
+select { font:inherit; padding:4px 6px; border-radius:8px; border:1px solid #cfc7b2; background:#fff; }
+@media (max-width: 480px) { .cards { grid-template-columns:1fr; } .two { grid-template-columns:1fr; } }

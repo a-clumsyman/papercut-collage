@@ -1,9 +1,10 @@
 """POST /api/process  ->  paper pieces for the collage.
 
-Request JSON:
-  pixels     base64 JPEG/PNG of the photo (max side <= 2000 px)
-  person     base64 PNG person mask from the segmenter (white = person), any size
-  landmarks  478 face-mesh points, normalised [x, y]
+The browser has already cropped the photo to the sheet and run the style model. Request JSON:
+  styled     base64 JPEG/PNG of the stylised head-and-shoulders crop (sheet aspect, max side <= 1600)
+  person     base64 PNG mask of the figure in that crop (white = person), any size
+  landmarks  478 face-mesh points, normalised [x, y] to the crop
+  style      "realistic" | "ghibli" | "toon"
   difficulty "easy" | "medium" (optional, default easy)
 """
 import base64, binascii, io, json
@@ -12,10 +13,11 @@ from http.server import BaseHTTPRequestHandler
 import numpy as np
 from PIL import Image
 
-from .engine import make_collage, DIFFICULTY
+from .collage import cut_styled, DIFF
+from .stylize import STYLES
 
 MAX_BODY = 12_000_000
-MAX_SIDE = 2000
+MAX_SIDE = 1600
 Image.MAX_IMAGE_PIXELS = MAX_SIDE * MAX_SIDE  # refuse decompression bombs early
 
 
@@ -35,24 +37,25 @@ def _image(b64, mode):
 
 
 def run(payload):
-    if not isinstance(payload, dict) or not payload.get('pixels') or not payload.get('person'):
+    if not isinstance(payload, dict) or not payload.get('styled') or not payload.get('person'):
         raise UserError('Missing photo data.')
     lm = payload.get('landmarks')
     if not isinstance(lm, list) or len(lm) < 468:
-        raise UserError('No face found. Try a brighter, face-forward selfie.')
+        raise UserError('No face found. Try a brighter, face-forward photo.')
+    style = payload.get('style', 'ghibli')
+    if style not in STYLES:
+        raise UserError('Unknown style.')
     difficulty = payload.get('difficulty', 'easy')
-    if difficulty not in DIFFICULTY:
+    if difficulty not in DIFF:
         difficulty = 'easy'
-    rgb = _image(payload['pixels'], 'RGB')
+    rgb = _image(payload['styled'], 'RGB')
     person = _image(payload['person'], 'L')
     if person.shape != rgb.shape[:2]:
         person = np.asarray(Image.fromarray(person).resize((rgb.shape[1], rgb.shape[0]), Image.BILINEAR))
     person = person > 127
     if person.mean() < .03:
         raise UserError("Couldn't find you in the photo. Try a plain background and good light.")
-    out = make_collage(rgb, person, [p[:2] for p in lm], difficulty)
-    out.pop('tried', None)
-    return out
+    return cut_styled(rgb, person, [p[:2] for p in lm], style, difficulty)
 
 
 class handler(BaseHTTPRequestHandler):
